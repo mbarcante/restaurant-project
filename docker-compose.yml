@@ -1,50 +1,53 @@
-version: '3.8'
+# docker-compose.yml
+version: '3.8' # Specify the Docker Compose file format version
 
 services:
-  node-app:
-    # --- CHANGE START ---
-    # The build context should now be the current directory (where docker-compose.yml is)
+  # --- Node.js Application Service ---
+  app: # Renamed service from 'node-app' to 'app' for consistency
     build:
-      context: .
-      # Explicitly specify the Dockerfile name if it's not simply 'Dockerfile'
-      dockerfile: Dockerfile
-    # --- CHANGE END ---
+      context: . # Build the image using the Dockerfile in the current directory
+      dockerfile: Dockerfile.dev # Explicitly specify the development Dockerfile
+    container_name: my-nodejs-app-dev # A friendly name for your app container
     ports:
-      - "3000:3000"
+      - "3000:3000" # Map host port 3000 to container port 3000
     volumes:
-      # Mount the entire SHOP-PROJECT directory from your host to /app in the container.
-      - .:/app
-      # Create an anonymous volume for node_modules inside the container.
-      - /app/node_modules
+      - .:/app 
+      - /app/node_modules # Create an anonymous volume for node_modules inside the container.
+                          # This prevents host node_modules from overwriting container's,
+                          # which is crucial for hot-reloading and proper dependency resolution.
     environment:
-      DB_HOST: db
-      DB_USER: ${POSTGRES_USER:-user}
-      DB_NAME: ${POSTGRES_DB:-mydatabase}
-      DB_PASSWORD: ${POSTGRES_PASSWORD:-password}
-      DB_PORT: 5432
-      PORT: 3000
+      DB_HOST: db 
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      NODE_ENV: development
     depends_on:
-      - db
+      - db # Ensure the 'db' service starts before the 'app' service
     networks:
-      - app-network
+      - app_network # Connect to the custom network
 
   db:
-    image: postgres:16-alpine
-    restart: always
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-user}
-      POSTGRES_DB: ${POSTGRES_DB:-mydatabase}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+    image: postgres:16-alpine 
+    container_name: my-postgres-db-dev
+    restart: always # Ensure the database always restarts if it crashes
+    environment: # Environment variables for PostgreSQL setup (matching app's DB_*)
+      # Reference variables from a .env file (or system environment variables)
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "5432:5432"
+      - "5432:5432" 
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data 
     networks:
-      - app-network
+      - app_network # Connect to the custom network
 
+# --- Networks Definition ---
 networks:
-  app-network:
-    driver: bridge
+  app_network: # Standardized network name (using underscore)
+    driver: bridge # Create a custom bridge network
 
+# --- Volumes Definition ---
 volumes:
-  db-data:
+  db_data: # Define the named volume for persistent database data

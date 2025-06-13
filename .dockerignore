@@ -1,0 +1,14 @@
+# Node.js specific
+node_modules
+npm-debug.log
+yarn-error.log
+.env # If you use .env files for local development, don't copy them into the image
+
+# TypeScript specific
+dist # Your compiled JavaScript output (usually generated *inside* the container)
+build # Another common output folder for compiled JS
+
+
+# Git
+.git
+.gitignore

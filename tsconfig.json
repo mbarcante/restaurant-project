@@ -1,28 +1,22 @@
+// tsconfig.json
 {
-    "compilerOptions": {
-        "target": "es2022",
-        "lib": ["ESNext"],
-        "strict": true,
-        "sourceMap": false,
-        "outDir": "./dist",
-        "module": "commonjs",
-        "skipLibCheck": true,
-        "noImplicitAny": true,
-        "esModuleInterop": true,
-        "resolveJsonModule": true,
-        "moduleResolution": "node",
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "allowSyntheticDefaultImports": true,
-        "forceConsistentCasingInFileNames": true,
-        "baseUrl": ".",
-        "paths": {
-            "*": ["node_modules", "src/*"]
-        },
-        "plugins": [
-            {"transform": "typecript=transform-paths", "exclude": ["**/noded_modules/**"]}
-        ]
-    },
-    "exclude": ["node_modules"],
-    "include": ["./src/**/*"]
+  "compilerOptions": {
+    "target": "es2022",                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+    "lib": ["ESNext"],                   /* Specify a list of library files to be included in the compilation. */
+    "strict": true,                      /* Enable all strict type-checking options. */
+    "sourceMap": true,                   /* Generates corresponding '.map' file for debugging. */
+    "outDir": "./dist",                  /* Redirect output structure to the directory. */
+    "rootDir": ".",                      /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
+    "module": "commonjs",                /* Specify what module code is generated. */
+    "skipLibCheck": true,                /* Skip type checking all .d.ts files. */
+    "noImplicitAny": true,               /* Enable error reporting for expressions and declarations with an implied 'any' type. */
+    "esModuleInterop": true,             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
+    "resolveJsonModule": true,           /* Enable importing .json files. */
+    "moduleResolution": "node",          /* Specify how modules are resolved. */
+    "allowSyntheticDefaultImports": true,/* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
+    "forceConsistentCasingInFileNames": true, /* Ensure that casing is consistent in imported file paths. */
+    "baseUrl": ".",                      /* Specify the base directory to resolve non-relative module names. */
+  },
+  "include": ["./src/**/*"],             /* Specify an array of filenames or patterns to include in the program. */
+  "exclude": ["node_modules", "dist"]    /* Specify an array of filenames or patterns that should be skipped when resolving 'include'. */
 }
