@@ -1,18 +1,13 @@
 import { Request, Response } from "express";
-import UserModel from "../models/UserModel";
-import db from '../db';
+import userServiceInstance from "../services/User.service";
 
 class UserController {
-    private userModel: UserModel;
+    private userService: typeof userServiceInstance = userServiceInstance;
 
-    constructor() {
-        this.userModel = new UserModel(db);
-    }
-
-    getAllUsers = async(req: Request, res: Response): Promise<void> => {
+    getAllUsers = async (req: Request, res: Response): Promise<void> => {
         try {
             console.log("Fetching all users from the database...");
-            const users = await this.userModel.getAllUsers();
+            const users = await this.userService.getAllUsers();
             res.json(users);
 
         } catch (error) {
@@ -20,10 +15,10 @@ class UserController {
             res.status(500).json({ error: "Internal Server Error" });
         }
     }
-    getUserById = async(req: Request, res: Response): Promise<void> => {
+    getUserById = async (req: Request, res: Response): Promise<void> => {
         const userId = parseInt(req.params.id, 10);
         try {
-            const user = await this.userModel.getUserById(userId);
+            const user = await this.userService.getUserById(userId);
             if (user) {
                 res.json(user);
             } else {
@@ -34,10 +29,24 @@ class UserController {
             res.status(500).json({ error: "Internal Server Error" });
         }
     }
+    getUserByEmail = async (req: Request, res: Response): Promise<void> => {
+        const email = req.params.email;
+        try {
+            const user = await this.userService.getUserByEmail(email);
+            if (user) {
+                res.json(user);
+            } else {
+                res.status(404).json({ error: "User not found" });
+            }
+        } catch (error) {
+            console.error("Error fetching user by email:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        } 
+    }
     createUser = async (req: Request, res: Response): Promise<void> => {
         try {
             console.log("Adding a new user to the database...");
-            const newUser = await this.userModel.createUser(req.body);
+            const newUser = await this.userService.registerUser(req.body);
             res.status(201).json("Usuário adicionado com sucesso: " + newUser.name);
         } catch (error) {
             console.error("Error adding user:", error);
@@ -47,7 +56,7 @@ class UserController {
     updateUser = async (req: Request, res: Response): Promise<void> => {
         const userId = parseInt(req.params.id, 10);
         try {
-            const updatedUser = await this.userModel.updateUser(userId, req.body);
+            const updatedUser = await this.userService.updateUser(userId, req.body);
             if (updatedUser) {
                 res.json(updatedUser);
             } else {
@@ -73,6 +82,6 @@ class UserController {
         // }
     }
 }
-const userController = new UserController();
+const userController = new UserController()
 
 export default userController;

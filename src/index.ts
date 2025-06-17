@@ -1,8 +1,8 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
-import userRoutes from './routers/userRoutes';
+import userRoutes from './routers/user.routes';
+import authRoutes from './routers/auth.routes';
 import db from './db';
-import {} from 'crypto';
 
 dotenv.config();
 
@@ -12,6 +12,7 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Hello, World!');
 });
 app.use(express.json());
+app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 
 db.raw("Select 1")
