@@ -43,16 +43,7 @@ class UserController {
             res.status(500).json({ error: "Internal Server Error" });
         } 
     }
-    createUser = async (req: Request, res: Response): Promise<void> => {
-        try {
-            console.log("Adding a new user to the database...");
-            const newUser = await this.userService.registerUser(req.body);
-            res.status(201).json("Usuário adicionado com sucesso: " + newUser.name);
-        } catch (error) {
-            console.error("Error adding user:", error);
-            res.status(500).json({ error: "Internal Server Error" });
-        }
-    }
+
     updateUser = async (req: Request, res: Response): Promise<void> => {
         const userId = parseInt(req.params.id, 10);
         try {

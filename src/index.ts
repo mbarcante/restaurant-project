@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import userRoutes from './routers/user.routes';
 import authRoutes from './routers/auth.routes';
-import db from './db';
+import {db} from './db';
 
 dotenv.config();
 

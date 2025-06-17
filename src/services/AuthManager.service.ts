@@ -1,8 +1,9 @@
-import userServiceInstance, { UserService } from "./User.service";
-import authServiceInstance, { AuthService } from './Auth.service';
-import { User } from "../interfaces/User.interface"; // Assuming User interface is defined here
-
-
+import type { User, UserCreate } from "../interfaces/User.interface"; // Assuming User interface is defined here
+import authServiceInstance from './Auth.service';
+import type { AuthService } from './Auth.service';
+import userServiceInstance from "./User.service";
+import type { UserService } from "./User.service";
+import  {userModelSingleton} from '../db';
 
 export class AuthManagerService {
     private userService: UserService;
@@ -29,6 +30,22 @@ export class AuthManagerService {
             return null;
         }
     }
+    
+    async register(userData: User): Promise<{ user: User, token: string } | null> {
+        
+        const hashedPassword = await this.authService.hashPassword(userData.password);
+        const newUser = await userModelSingleton.createUser({ ...userData, password: hashedPassword });
+        if (!newUser) {
+            return null;
+        }
+        const tokenPayload = {
+            id: newUser.id,
+            email: newUser.email,
+            admin: newUser.admin
+        };
+        const token = this.authService.generateToken(tokenPayload);
+        return { user: newUser, token };
+    }
 }
 
-export default new AuthManagerService(); 
+export default new AuthManagerService();

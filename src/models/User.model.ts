@@ -47,5 +47,11 @@ class UserModel {
         console.log(`User with ID ${id} deleted successfully.`);
     }
 }
+let userModelInstance: UserModel | null = null;
 
-export default UserModel;
+export const getOrInitUserModel = (knexInstance: Knex): UserModel => {
+    if (!userModelInstance) {
+        userModelInstance = new UserModel(knexInstance);
+    }
+    return userModelInstance;
+};
