@@ -1,6 +1,6 @@
 import knex from "knex";
-import knexConfig from "../knexfile";
-import { getOrInitUserModel } from "./models/User.model"; 
+import knexConfig from "../../knexfile";
+import { getOrInitUserModel } from "../models/User.model"; 
 
 const enviroment = process.env.NODE_ENV || "development"; 
 const config = knexConfig[enviroment];

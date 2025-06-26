@@ -3,7 +3,7 @@ import authServiceInstance from './Auth.service';
 import type { AuthService } from './Auth.service';
 import userServiceInstance from "./User.service";
 import type { UserService } from "./User.service";
-import  {userModelSingleton} from '../db';
+import  {userModelSingleton} from '../config/db';
 
 export class AuthManagerService {
     private userService: UserService;
