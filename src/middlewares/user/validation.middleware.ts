@@ -6,19 +6,28 @@ export const validateUserCreation = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { name, email, password } = req.body;
+  const { username, first_name, last_name, email, password } = req.body;
 
   const existingUser = await userService.getUserByEmail(email);
   if (existingUser) {
     res.status(400).json({ error: "This email is already registered" });
   }
 
-  if (!name || !email || !password) {
+  if (!username || first_name || last_name || !email || !password) {
     res.status(400).json({
       message: "Validation failed",
       errors: [
-        !name ? { field: "name", message: "Name is required" } : null,
-        !email ? { field: "email", message: "Email is required" } : null,
+        !username
+          ? { field: "Username", message: "Username is required" }
+          : null,
+        !first_name
+          ? { field: "First Name", message: "First Name is required" }
+          : null,
+        !last_name
+          ? { field: "Last Name", message: "Last Name is required" }
+          : null,
+        !email ? { field: "email", message: "Email is required" }
+          : null,
         !password
           ? { field: "password", message: "Password is required" }
           : null,

@@ -34,7 +34,7 @@ export class AuthManagerService {
     async register(userData: User): Promise<{ user: User, token: string } | null> {
         
         const hashedPassword = await this.authService.hashPassword(userData.password);
-        const newUser = await userModelSingleton.createUser({ ...userData, password: hashedPassword });
+        const newUser = await userModelSingleton.registerUser({ ...userData, password: hashedPassword });
         if (!newUser) {
             return null;
         }

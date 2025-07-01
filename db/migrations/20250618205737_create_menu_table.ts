@@ -2,7 +2,7 @@ import type { Knex } from "knex";
 
 export async function up(knex: Knex): Promise<void> {
     await knex.raw(`
-        CREATE TABLE IF NOT EXISTS menu (
+        CREATE TABLE IF NOT EXISTS menu_items (
             id SERIAL PRIMARY KEY,
             name VARCHAR(255) NOT NULL,
             description TEXT NOT NULL,
@@ -14,8 +14,8 @@ export async function up(knex: Knex): Promise<void> {
     `);
 
     await knex.raw(`
-        CREATE TRIGGER set_menu_updated_at
-        BEFORE UPDATE ON menu
+        CREATE TRIGGER set_menu_items_updated_at
+        BEFORE UPDATE ON menu_items
         FOR EACH ROW
         EXECUTE FUNCTION update_updated_at_column();
     `);
@@ -24,7 +24,7 @@ export async function up(knex: Knex): Promise<void> {
 
 export async function down(knex: Knex): Promise<void> {
     await knex.raw(`
-        DROP TRIGGER IF EXISTS set_menu_updated_at ON menu;
+        DROP TRIGGER IF EXISTS set_menu_items_updated_at ON menu;
     `);
     await knex.raw(`
         DROP TABLE IF EXISTS menu;

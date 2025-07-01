@@ -1,6 +1,8 @@
 export interface User {
     id: number;
-    name: string;
+    username: string;
+    first_name: string;
+    last_name: string;
     email: string;
     password: string;
     admin: boolean;
@@ -9,8 +11,10 @@ export interface User {
 }
 
 export interface UserCreate {
-    name: string; 
+   username: string;
+    first_name: string;
+    last_name: string;
     email: string;
-    password: string; 
-    admin?: boolean; 
+    password: string;
+    admin?: boolean;
 }

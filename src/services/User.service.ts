@@ -1,5 +1,5 @@
-import { User, UserCreate } from '../interfaces/User.interface'; // Assuming interfaces are here
-import  {userModelSingleton} from '../config/db'; // Your knex instance. Ensure this is imported correctly.
+import { User, UserCreate } from '../interfaces/User.interface'; 
+import  {userModelSingleton} from '../config/db'; 
 
 export class UserService {
 

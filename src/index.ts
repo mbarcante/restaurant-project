@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import userRoutes from './routers/user.routes';
 import authRoutes from './routers/auth.routes';
+import menuRoutes from './routers/menu.routes'
 import {db} from './config/db';
 
 dotenv.config();
@@ -14,6 +15,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/menu', menuRoutes)
 
 db.raw("Select 1")
     .then(() => {
